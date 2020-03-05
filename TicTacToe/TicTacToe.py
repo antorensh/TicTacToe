@@ -40,53 +40,67 @@ def board_full(board):
 
     return True
 
+def who_goes_first(p1,p2):
+    import random
+    lst = [p1,p2]
+    random.shuffle(lst)
+    return lst
+
+
+
 if __name__ == "__main__":
-    import os
+    replay = 'Y'
 
-    #printing board
-    my_board =[' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    while replay.upper() == 'Y':
+        import os
 
-    print("TicTacToe, let's play!")
-    print_board([1,2,3,4,5,6,7,8,9])
+        #printing board
+        my_board =[' ',' ',' ',' ',' ',' ',' ',' ',' ']
 
-    #symbol assignment
-    player1 = player_choice()
-    player2 = ''
+        print("TicTacToe, let's play!")
+        print_board([1,2,3,4,5,6,7,8,9])
 
-    if player1 == 'X':
-        player2 = 'O'
-    else:
-        player2 = 'X'
+        #symbol assignment
+        player1 = player_choice()
+        player2 = ''
+
+        if player1 == 'X':
+            player2 = 'O'
+        else:
+            player2 = 'X'
     
-    
-    
-    winner = ''
+        winner = ''
 
-    while(not board_full(my_board)):
+        players_list = who_goes_first(player1,player2)
 
-        num = int(input("Player 1 make your move: "))
-        while place_marker(my_board,player1,num):
-            num = int(input("Player 1 make your move: "))
-        if check_win(my_board,player1) :
-            winner = player1
-            break
-        os.system('cls')
-        print_board(my_board)
-        if board_full(my_board): break
+        while(not board_full(my_board)):
 
-        num = int(input("Player 2 make your move: "))
-        while place_marker(my_board,player2,num):
-            num = int(input("Player 2 make your move: "))
-        if check_win(my_board,player2) :
-            winner = player2
-            break
-        os.system('cls')
-        print_board(my_board)
+            num = int(input("Player '{}' make your move: ".format(players_list[0])))
+            while place_marker(my_board,players_list[0],num):
+                num = int(input("Player '{}' make your move: ".format(players_list[0])))
+            os.system('cls')
+            print_board(my_board)
+            if check_win(my_board,players_list[0]) :
+                winner = players_list[0]
+                break
+            if board_full(my_board): break
+
+            num = int(input("Player '{}' make your move: ".format(players_list[1])))
+            while place_marker(my_board,players_list[1],num):
+                num = int(input("Player '{}' make your move: ".format(players_list[1])))
+            os.system('cls')
+            print_board(my_board)
+            if check_win(my_board,players_list[1]) :
+                winner = players_list[1]
+                break
+            
             
 
-    if len(winner) != 0:
-        print('The winner is '+ winner)
-    else:
-        print("Draw!")
+        if len(winner) != 0:
+            print('The winner is '+ winner)
+        else:
+            print("Draw!")
+
+        replay = input("\nWould you like to play again? Y or N\n")
 
     pass
